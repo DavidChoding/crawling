@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>👓 개발자 뉴스</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+	onload = function() {
+		
+		var $tbody = $("#tbody")
+		
+		$.ajax({
+		url: 'http://localhost:8585/crawling',
+    	dataType: 'json',
+    	contentType: 'application/json; charset=UTF-8',
+    	success: function(data) {
+			var datas = data.data;
+			
+			for (var i = 0; i < 30; i++) {
+				
+				var $tr = $('<tr>')
+				var $date = $('<td>').append(datas[i].date)
+				var $source = $('<td>').append(datas[i].source)
+				var $output = '<td><a href="' + datas[i].link + '" target=_blank>'  + datas[i].title + '</a>';
+				var $contents = $('<td>').append(datas[i].contents)
+				
+				$tr.append($date)
+				$tr.append($source)
+				$tr.append($output)
+				$tr.append($contents)
+				$tbody.append($tr)
+				
+			}
+    	}
+	});
+}
+</script>
+<style type="text/css">
+body {
+	background: #F5F5F5;
+}
+</style>
+</head>
+
+<body>
+	<div class="col-auto">
+		<table class="table table-striped table-hover">
+			<thead class="thead-dark">
+				<tr>
+					<th>시간</th>
+					<th>출처</th>
+					<th>제목</th>
+					<th>요약</th>
+				</tr>
+			</thead>
+			<tbody id="tbody"></tbody>
+		</table>
+	</div>
+	
+</body>
+</html>

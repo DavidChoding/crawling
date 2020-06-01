@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>네이버 영화</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+	//페이지를 로드하면 바로 실행
+	onload = function() {
+		var $tbody = $("#tbody")
+
+		//크롤링 해 올 서버가 실행되어 있어야 함
+		//일반적인 사이트는 크롤링을 자주하면 차단되므로 차단 시 다른IP로 접속
+		/*
+		 * Serving Flask app "app" (lazy loading)
+		 * Environment: production
+		   WARNING: This is a development server. Do not use it in a production deployment.
+		   Use a production WSGI server instead.
+		 * Debug mode: off
+		 * Running on http://localhost:8585/ (Press CTRL+C to quit)
+		 */
+		$.getJSON('http://localhost:8585/crawling', function(data) {
+			var movies = data.movies;
+
+			//별점이 높은 순서대로 정렬
+			movies.sort(function(a, b) {
+				return b.star - a.star;
+			});
+
+			for (var i = 0; i < movies.length; i++) {
+
+				var $tr = $('<tr>')
+				var $title = $('<td>').append(movies[i].title)
+				var $star = $('<td>').append(movies[i].star)
+				$tr.append($title)
+				$tr.append($star)
+				$tbody.append($tr)
+
+			}
+		});
+	}
+</script>
+<style type="text/css">
+body {
+	background: #F5F5F5;
+}
+</style>
+</head>
+<body>
+	<br>
+	<h1 align="center">😂 크 롤 링 🤣</h1>
+	<br>
+	<div class="col-auto">
+		<table class="table table-striped table-hover">
+			<thead class="thead-dark">
+				<tr>
+					<th>영화 🎬</th>
+					<th>별점 ✨</th>
+				</tr>
+			</thead>
+			<tbody id="tbody"></tbody>
+		</table>
+	</div>
+</body>
+</html>
